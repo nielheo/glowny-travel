@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "tp",
+    "password": "P@ssw0rd",
+    "database": "glowny_travel_dev",
+    "host": "127.0.0.1\\MSSQLEXPRESS",
+    "dialect": "mssql",
+    "secret": "glownyTravelDanielHeo"
+  },
+  "test": {
+    "username": "tp",
+    "password": "P@ssw0rd",
+    "database": "glowny_travel_test",
+    "host": "127.0.0.1\\MSSQLEXPRESS",
+    "dialect": "mssql",
+    "secret": "glownyTravelDanielHeo"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "glowny_travel_production",
+    "host": "127.0.0.1\\MSSQLEXPRESS",
+    "dialect": "mssql",
+    "secret": "glownyTravelDanielHeo"
+  }
+}
