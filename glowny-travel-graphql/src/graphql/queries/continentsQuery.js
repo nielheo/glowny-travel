@@ -1,15 +1,16 @@
 'use strict'
 import { continentType } from '../types'
-import db from '../../mongodb'
+import {GraphQLList} from 'graphql'
+import { continentModel } from '../../mongodb/models'
 
-const Continents = db.collection('continent')
 
 var continentQuery = {
-	type: continentType,
+	type: new GraphQLList(continentType),
 	resolve: (root, _id) => {
     var items = new Promise((resolve, reject) => {
-      return Continents.findOne({}, function(err, continents){
-        err ? reject(err) : resolve(continents)
+      return continentModel.find({}).then(function(continents) {
+        console.log(continents)
+        resolve(continents)
       })
     })      
     return items
