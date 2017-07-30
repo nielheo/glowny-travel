@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var countrySchema = new Schema({
     _id: Number,
     name: String,
+    continentId: Number
 }, {collection:'country'});
 
 // Compile model from schema

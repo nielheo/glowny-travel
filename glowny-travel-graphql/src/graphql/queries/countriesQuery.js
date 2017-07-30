@@ -1,13 +1,20 @@
 'use strict'
-import { countryType } from '../types'
-import {GraphQLList} from 'graphql'
-import { countrytModel } from '../../mongodb/models'
+import countryType from '../types/countryType'
+import { GraphQLList, GraphQLInt, GraphQLNonNull } from 'graphql'
+import { countryModel } from '../../mongodb/models'
 
 var countryQuery = {
-	type: new GraphQLList(countryType),
-	resolve: (root, _id) => {
+  type: new GraphQLList(countryType),
+  args: {
+    continentId: {
+      description: 'id of continent',
+      type: new GraphQLNonNull(GraphQLInt)
+    },
+  },
+	resolve: (root, args) => {
+    
     var items = new Promise((resolve, reject) => {
-      return countrytModel.find({}).then(function(countries) {
+      return countryModel.find({continentId: args.continentId}).then(function(countries) {
         resolve(countries)
       })
     })      

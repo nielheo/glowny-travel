@@ -2,6 +2,7 @@
 import {GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLString} from 'graphql'
 import countryType from './countryType'
 import { countryModel }  from '../../mongodb/models'
+import countriesQuery from '../queries/countriesQuery'
 
 
 const continentType = new GraphQLObjectType({
@@ -12,17 +13,16 @@ const continentType = new GraphQLObjectType({
     name: { type: GraphQLString },
     countries: {
       type: new GraphQLList(countryType),
-      resolve: (result, _id) => {
+      resolve: (args, _id) => {
         var items = new Promise((resolve, reject) => {
-        //console.log(root)
-          return countryModel.find({continentId: result._id}).then(function(countries) {
+          return countryModel.find({continentId: args._id}).then(function(countries) {
             resolve(countries)
           })
         })      
         return items
       }
     }
-	}
+  }
 })
 
 export default continentType

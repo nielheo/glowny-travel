@@ -1,12 +1,13 @@
 import { GraphQLObjectType } from 'graphql'
 
-import { echoQuery, continentsQuery } from './queries'
+import { echoQuery, continentsQuery, countriesQuery } from './queries'
 
 const viewerType = new GraphQLObjectType({
 	name: 'Viewer',
 	description: 'A viewer',
 	fields: {
     continents: continentsQuery,
+    countries: countriesQuery,
 		//users: usersQuery,
 		//roles: rolesQuery,
 		//products: productsQuery,
