@@ -10,11 +10,19 @@ var countryQuery = {
       description: 'id of continent',
       type: new GraphQLNonNull(GraphQLInt)
     },
+    _id: {
+      description: 'id of country',
+      type: GraphQLInt
+    }
   },
 	resolve: (root, args) => {
     
     var items = new Promise((resolve, reject) => {
-      return countryModel.find({continentId: args.continentId}).then(function(countries) {
+      let filter = { continentId: args.continentId }
+      if(args._id) {
+        filter['_id'] = args._id
+      }
+      return countryModel.find(filter).then(function(countries) {
         resolve(countries)
       })
     })      

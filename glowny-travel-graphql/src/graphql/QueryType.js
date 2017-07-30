@@ -1,6 +1,6 @@
 import { GraphQLObjectType } from 'graphql'
 
-import { echoQuery, continentsQuery, countriesQuery } from './queries'
+import { echoQuery, continentsQuery, countriesQuery, citiesQuery } from './queries'
 
 const viewerType = new GraphQLObjectType({
 	name: 'Viewer',
@@ -8,6 +8,7 @@ const viewerType = new GraphQLObjectType({
 	fields: {
     continents: continentsQuery,
     countries: countriesQuery,
+    cities: citiesQuery,
 		//users: usersQuery,
 		//roles: rolesQuery,
 		//products: productsQuery,

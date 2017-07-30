@@ -2,8 +2,6 @@
 import {GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLString} from 'graphql'
 import countryType from './countryType'
 import { countryModel }  from '../../mongodb/models'
-import countriesQuery from '../queries/countriesQuery'
-
 
 const continentType = new GraphQLObjectType({
 	name: 'Continent',

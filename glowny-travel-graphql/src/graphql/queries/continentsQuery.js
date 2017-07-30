@@ -9,7 +9,6 @@ var continentQuery = {
 	resolve: (root, _id) => {
     var items = new Promise((resolve, reject) => {
       return continentModel.find({}).then(function(continents) {
-        console.log(continents)
         resolve(continents)
       })
     })      
