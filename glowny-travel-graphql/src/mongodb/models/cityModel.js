@@ -5,7 +5,8 @@ var citySchema = new Schema({
     _id: Number,
     name: String,
     subClass: String,
-    countryId: Number
+    countryId: Number,
+    provinceId: String,
 }, {collection:'city'});
 
 // Compile model from schema
