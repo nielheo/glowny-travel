@@ -3,16 +3,26 @@ import { continentType } from '../types'
 import {GraphQLList} from 'graphql'
 import { continentModel } from '../../mongodb/models'
 
+import Cacheman from 'cacheman'
+var cache = new Cacheman({ ttl: 60 * 60 })
 
 var continentQuery = {
 	type: new GraphQLList(continentType),
 	resolve: (root, _id) => {
-    var items = new Promise((resolve, reject) => {
-      return continentModel.find({}).then(function(continents) {
-        resolve(continents)
-      })
-    })      
-    return items
+    let key = 'continents'
+    return cache.get(key).then((continents) => {
+      if(continents) {
+        return continents
+      } else {
+        return continentModel.find({}).then(function(continents) {
+          return cache.set(key, continents).then((continents) => {
+            return continents
+          })
+          
+        })
+      }
+    })
+    
   }
 }
 
