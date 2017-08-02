@@ -10,8 +10,10 @@ const countryType = new GraphQLObjectType({
 	name: 'Country',
 	description: 'A country',
 	fields: {
-		_id: { type: GraphQLInt },
+    _id: { type: GraphQLInt },
+    code: { type: GraphQLString },
     name: { type: GraphQLString },
+    //continentId: { type: GraphQLInt },
     cities: {
       type: new GraphQLList(cityType),
       resolve: (args, _id) => {

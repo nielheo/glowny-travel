@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var countrySchema = new Schema({
     _id: Number,
+    code: String,
     name: String,
     continentId: Number
 }, {collection:'country'});
