@@ -1,11 +1,38 @@
 'use strict'
 
 import {GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLScalarType } from 'graphql'
-import provinceType from './provinceType'
 import { provinceModel }  from '../../mongodb/models'
 
 import Cacheman from 'cacheman'
 var cache = new Cacheman({ ttl: 60 * 60 })
+
+const countryType = new GraphQLObjectType({
+	name: 'country',
+	description: 'A country',
+	fields: {
+    _id: { type: GraphQLInt },
+    code: { type: GraphQLString },
+    name: { type: GraphQLString },
+	}
+})
+
+const provinceType = new GraphQLObjectType({
+	name: 'province',
+	description: 'A province',
+	fields: {
+    _id: { type: GraphQLString },
+    name: { type: GraphQLString },
+	}
+})
+
+const vicinityType = new GraphQLObjectType({
+	name: 'vicinity',
+	description: 'A multi-city (vicinity)',
+	fields: {
+    _id: { type: GraphQLString },
+    name: { type: GraphQLString },
+	}
+})
 
 const cityType = new GraphQLObjectType({
 	name: 'City',
@@ -13,30 +40,48 @@ const cityType = new GraphQLObjectType({
 	fields: {
 		_id: { type: GraphQLString },
     name: { type: GraphQLString },
-    subClass: { type: GraphQLString },
+    nameLong: { type: GraphQLString },
     provinceId: { type: GraphQLString },
-    
+    country: {
+      type: countryType,
+      resolve: (args) => {
+        if (args.countryId) {
+          return {
+            _id: args.countryId,
+            name: args.countryName,
+            code: args.countryCode,
+          }
+        } else {
+          return null;
+        }
+      }
+    },
     province: {
       type: provinceType,
-      resolve: (args, _id) => {
-        if (!args.provinceId)
+      resolve: (args) => {
+        if (args.provinceId) {
+          return {
+            _id: args.provinceId,
+            name: args.provinceName,
+          }
+        } else {
           return null;
-        
-        let key = 'province_' + args.provinceId
-
-        return cache.get(key).then(function(province) {
-          if(province) {
-            return province
-          } else {
-            return provinceModel.findOne({_id: args.provinceId}).then(function(province) {
-              return cache.set(key, province).then(function(province){
-                return province
-              })
-            })
-          } 
-        })
+        }
       }
-    }
+    },
+    vicinity: {
+      type: vicinityType,
+      resolve: (args) => {
+        if (args.vicinityId) {
+          return {
+            _id: args.vicinityId,
+            name: args.vicinityName,
+          }
+        } else {
+          return null;
+        }
+      }
+    },
 	}
 })
 

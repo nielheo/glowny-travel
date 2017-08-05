@@ -4,9 +4,16 @@ var Schema = mongoose.Schema;
 var citySchema = new Schema({
     _id: Number,
     name: String,
-    subClass: String,
+    nameLong: String,
+    multicityId: Number,
+    multicityName: String,
+    provinceId: Number,
+    provinceName: String,
     countryId: Number,
-    provinceId: String,
+    countryCode: String,
+    countryName: String,
+    latitude: Number,
+    longitude: Number,
 }, {collection:'city'});
 
 // Compile model from schema

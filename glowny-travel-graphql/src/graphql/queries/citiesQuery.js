@@ -12,7 +12,6 @@ var citiesQuery = {
     },
   },
 	resolve: (root, args) => {
-    
     var items = new Promise((resolve, reject) => {
       return cityModel.find({countryId: args.countryId}).then(function(cities) {
         resolve(cities)
