@@ -1,7 +1,8 @@
 'use strict'
 
-import {GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLScalarType } from 'graphql'
-import { provinceModel }  from '../../mongodb/models'
+import {GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLScalarType, GraphQLList } from 'graphql'
+import propertyType from './propertyType'
+import { provinceModel, propertyModel }  from '../../mongodb/models'
 
 import Cacheman from 'cacheman'
 var cache = new Cacheman({ ttl: 60 * 60 })
@@ -41,7 +42,6 @@ const cityType = new GraphQLObjectType({
 		_id: { type: GraphQLString },
     name: { type: GraphQLString },
     nameLong: { type: GraphQLString },
-    provinceId: { type: GraphQLString },
     country: {
       type: countryType,
       resolve: (args) => {
@@ -72,16 +72,35 @@ const cityType = new GraphQLObjectType({
     vicinity: {
       type: vicinityType,
       resolve: (args) => {
-        if (args.vicinityId) {
+        if (args.multicityId) {
           return {
-            _id: args.vicinityId,
-            name: args.vicinityName,
+            _id: args.multicityId,
+            name: args.multicityName,
           }
         } else {
           return null;
         }
       }
     },
+    properties: {
+      type: new GraphQLList(propertyType),
+      resolve: (args, _id) => {
+        let key = 'properties_' + args._id + '_'
+        console.log(key)
+        return cache.get(key).then((properties) => {
+          if (properties) {
+            return properties
+          } 
+          return propertyModel.find({cityId: args._id}).then((properties) => {
+            return cache.set(key, properties).then((properties) => {
+              return properties
+            })
+          })
+          
+        })
+        
+      }
+    }
 	}
 })
 
