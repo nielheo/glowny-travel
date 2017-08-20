@@ -1,0 +1,12 @@
+import mongoose from '../index.js'
+var Schema = mongoose.Schema;
+
+var propertyLocationSchema = new Schema({
+    _id: Number,
+    locationDescription: String,
+}, {collection:'propertyLocation'});
+
+// Compile model from schema
+var propertyLocationModel = mongoose.model('propertyLocation', propertyLocationSchema )
+
+export default propertyLocationModel

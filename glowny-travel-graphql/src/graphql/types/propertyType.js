@@ -1,7 +1,7 @@
 'use strict'
 
 import {GraphQLObjectType, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLScalarType } from 'graphql'
-import { provinceModel }  from '../../mongodb/models'
+import { provinceModel, propertyLocationModel }  from '../../mongodb/models'
 
 import Cacheman from 'cacheman'
 var cache = new Cacheman({ ttl: 60 * 60 })
@@ -23,7 +23,17 @@ const propertyType = new GraphQLObjectType({
     categoryId: { type: GraphQLInt },
     categoryName: { type: GraphQLString },
     location: { type: GraphQLString },
+    image: { type: GraphQLString },
+    thumbnail: { type: GraphQLString },
     cityId: { type: GraphQLInt },
+    locationDescription: {
+      type: GraphQLString,
+      resolve: (args, _id) => {
+        return propertyLocationModel.findOne({_id: args._id}).then(function(location) {
+          return location.locationDescription
+        })
+      }
+    }
   }
 })
 
