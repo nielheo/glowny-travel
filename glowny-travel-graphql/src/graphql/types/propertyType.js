@@ -12,7 +12,12 @@ const propertyType = new GraphQLObjectType({
 	fields: {
     _id: { type: GraphQLInt },
     seqNumber: { type: GraphQLInt },
-    name: { type: GraphQLString },
+    name: { 
+      type: GraphQLString, 
+      resolve: function(prop) {
+        return prop.name[prop.language] || prop.name['en-US'] || '' 
+      } 
+    },
     address1: { type: GraphQLString },
     address2: { type: GraphQLString },
     city: { type: GraphQLString },
@@ -21,18 +26,28 @@ const propertyType = new GraphQLObjectType({
     country: { type: GraphQLString },
     starRating: { type: GraphQLFloat },
     categoryId: { type: GraphQLInt },
-    categoryName: { type: GraphQLString },
-    location: { type: GraphQLString },
+    categoryName: { 
+      type: GraphQLString, 
+      resolve: function(prop) {
+        return prop.categoryName[prop.language] || prop.categoryName['en-US'] || ''
+      }  
+    },
+    location: { 
+      type: GraphQLString, 
+      resolve: function(prop) {
+        return prop.location[prop.language] || prop.location['en-US'] || ''
+      }  
+    },
     image: { type: GraphQLString },
     thumbnail: { type: GraphQLString },
     cityId: { type: GraphQLInt },
     locationDescription: {
       type: GraphQLString,
-      resolve: (args, _id) => {
+      /*resolve: (args, _id) => {
         return propertyLocationModel.findOne({_id: args._id}).then(function(location) {
           return location.locationDescription
         })
-      }
+      }*/
     }
   }
 })

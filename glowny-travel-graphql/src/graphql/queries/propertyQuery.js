@@ -27,9 +27,10 @@ var propertyQuery = {
         console.log(property)
         return {
           ...property,
-          name: property.name[args.language] || property.name['en-US'],
-          location: property.location[args.language] || property.location['en-US'],
-          categoryName: property.categoryName[args.language] || property.categoryName['en-US'],
+          language: args.language,
+          //name: property.name[args.language] || property.name['en-US'],
+          //location: property.location[args.language] || property.location['en-US'],
+          //categoryName: property.categoryName[args.language] || property.categoryName['en-US'],
         }
       } else {
         return propertyModel.findOne({_id: args.id}).then((property) => {
@@ -40,9 +41,10 @@ var propertyQuery = {
             //console.log(languageType._values.filter(l => l.name === args.language))
             return {
               ...property._doc,
-              name: property._doc.name[args.language] || property._doc.name['en-US'],
-              location: property._doc.location[args.language] || property._doc.location['en-US'],
-              categoryName: property._doc.categoryName[args.language] || property._doc.categoryName['en-US'],
+              language: args.language,
+              //name: property._doc.name[args.language] || property._doc.name['en-US'],
+              //location: property._doc.location[args.language] || property._doc.location['en-US'],
+              //categoryName: property._doc.categoryName[args.language] || property._doc.categoryName['en-US'],
             }
           })
           

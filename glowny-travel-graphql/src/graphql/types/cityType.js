@@ -40,15 +40,25 @@ const cityType = new GraphQLObjectType({
 	description: 'A city',
 	fields: {
 		_id: { type: GraphQLString },
-    name: { type: GraphQLString },
-    nameLong: { type: GraphQLString },
+    name: { 
+      type: GraphQLString,
+      resolve: function(prop) {
+        return prop.name[prop.language] || prop.name['en-US'] || ''
+      } 
+    },
+    nameLong: { 
+      type: GraphQLString,
+      resolve: function(prop) {
+        return prop.nameLong[prop.language] || prop.nameLong['en-US'] || ''
+      } 
+    },
     country: {
       type: countryType,
       resolve: (args) => {
         if (args.countryId) {
           return {
             _id: args.countryId,
-            name: args.countryName,
+            //name: args.countryName,
             code: args.countryCode,
           }
         } else {
@@ -88,11 +98,11 @@ const cityType = new GraphQLObjectType({
         let key = 'properties_' + args._id + '_'
         return cache.get(key).then((properties) => {
           if (properties) {
-            return properties
+            return properties.map(property => {return {...property, language: args.language}})
           } 
           return propertyModel.find({cityId: args._id}).then((properties) => {
             return cache.set(key, properties).then((properties) => {
-              return properties
+              return properties.map(property => {return {...property._doc, language: args.language}})
             })
           })
           

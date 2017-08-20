@@ -3,15 +3,15 @@ var Schema = mongoose.Schema;
 
 var citySchema = new Schema({
     _id: Number,
-    name: String,
-    nameLong: String,
+    name: {},
+    nameLong: {},
     multicityId: Number,
-    multicityName: String,
+    //multicityName: String,
     provinceId: Number,
-    provinceName: String,
+    //provinceName: String,
     countryId: Number,
-    countryCode: String,
-    countryName: String,
+    //countryCode: String,
+    //countryName: String,
     latitude: Number,
     longitude: Number,
 }, {collection:'city'});
