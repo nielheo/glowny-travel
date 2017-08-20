@@ -21,6 +21,8 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 node_modules*/
+android/
+ios/
 
 *.sqlite
 glowny-shop-graphql/db.development.sqlite
