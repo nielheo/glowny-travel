@@ -11,7 +11,13 @@ const continentType = new GraphQLObjectType({
 	description: 'A continent',
 	fields: {
 		_id: { type: GraphQLInt },
-    name: { type: GraphQLString },
+    name: { 
+      type: GraphQLString,
+      resolve: function(prop) {
+        console.log(prop)
+        return prop.name[prop.language] || prop.name['en-US'] || ''
+      } 
+    },
     countries: {
       type: new GraphQLList(countryType),
       resolve: (args, _id) => {
@@ -19,11 +25,11 @@ const continentType = new GraphQLObjectType({
 
         return cache.get(key).then((countries) => {
           if (countries) {
-            return countries
+            return countries.map(country => { return { ...country, language: args.language } } )
           } else {
             return countryModel.find({continentId: args._id}).then((countries) => {
               return cache.set(key, countries).then((countries) => {
-                return countries
+                return countries.map(country => { return { ...country._doc, language: args.language } } )
               })
             })
           }

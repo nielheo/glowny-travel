@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var continentSchema = new Schema({
     _id: Number,
-    name: String,
+    name: {},
 }, {collection:'continent'});
 
 // Compile model from schema

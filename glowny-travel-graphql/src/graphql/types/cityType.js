@@ -52,7 +52,7 @@ const cityType = new GraphQLObjectType({
     name: { 
       type: GraphQLString,
       resolve: function(prop) {
-        console.log(prop)
+        //console.log(prop)
         return prop.name[prop.language] || prop.name['en-US'] || ''
       } 
     },
@@ -71,7 +71,7 @@ const cityType = new GraphQLObjectType({
           if (countries) {
             let a =  { ...countries.filter(country => country._id === args.countryId)[0],
               language: args.language }
-            console.log(a)
+            //console.log(a)
             return a
           } else {
             

@@ -24,17 +24,17 @@ const countryType = new GraphQLObjectType({
       type: new GraphQLList(cityType),
       resolve: (args, _id) => {
         let key = 'cities_' + args._id
-        console.log(args)
+        //console.log(args)
         return cache.get(key).then(function(cities) {
-          console.log('cities from cache')
-          console.log(cities)
+          //console.log('cities from cache')
+          //console.log(cities)
           if(cities) {
             return cities.map(city => { return {...city, language: args.language}})
           } else {
             return cityModel.find({countryId: args._id}).then(function(cities) {
-              console.log('cities from db')
-              console.log(args._id)
-              console.log(cities)
+              //console.log('cities from db')
+              //console.log(args._id)
+              //console.log(cities)
               return cache.set(key, cities).then(function(cities){
                 return cities.map(city => { return {...city._doc, language: args.language}})
               })
