@@ -15,7 +15,7 @@ const countryType = new GraphQLObjectType({
     name: { 
       type: GraphQLString,
       resolve: function(prop) {
-        console.log(prop)
+        //console.log(prop)
         return prop.name[prop.language] || prop.name['en-US'] || ''
       } 
     },
@@ -24,14 +24,19 @@ const countryType = new GraphQLObjectType({
       type: new GraphQLList(cityType),
       resolve: (args, _id) => {
         let key = 'cities_' + args._id
-
+        console.log(args)
         return cache.get(key).then(function(cities) {
+          console.log('cities from cache')
+          console.log(cities)
           if(cities) {
-            return cities
+            return cities.map(city => { return {...city, language: args.language}})
           } else {
             return cityModel.find({countryId: args._id}).then(function(cities) {
+              console.log('cities from db')
+              console.log(args._id)
+              console.log(cities)
               return cache.set(key, cities).then(function(cities){
-                return cities
+                return cities.map(city => { return {...city._doc, language: args.language}})
               })
                 
             })

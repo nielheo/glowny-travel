@@ -47,10 +47,12 @@ const cityType = new GraphQLObjectType({
 	name: 'City',
 	description: 'A city',
 	fields: {
-		_id: { type: GraphQLString },
+    _id: { type: GraphQLString },
+    //language: { type: GraphQLString },
     name: { 
       type: GraphQLString,
       resolve: function(prop) {
+        console.log(prop)
         return prop.name[prop.language] || prop.name['en-US'] || ''
       } 
     },
@@ -114,6 +116,7 @@ const cityType = new GraphQLObjectType({
       type: new GraphQLList(propertyType),
       resolve: (args, _id) => {
         let key = 'properties_' + args._id + '_'
+        console.log(args)
         return cache.get(key).then((properties) => {
           if (properties) {
             return properties.map(property => {return {...property, language: args.language}})
