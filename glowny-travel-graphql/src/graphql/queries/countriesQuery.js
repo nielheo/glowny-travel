@@ -2,6 +2,7 @@
 import countryType from '../types/countryType'
 import { GraphQLList, GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql'
 import { countryModel } from '../../mongodb/models'
+import { languageType } from '../enums'
 
 import Cacheman from 'cacheman'
 var cache = new Cacheman({ ttl: 60 * 60 })
@@ -17,25 +18,30 @@ var countryQuery = {
       description: 'id of continent. (Will be ignored if code is present)',
       type: GraphQLInt
     },
+    language: {
+      type: new GraphQLNonNull(languageType),
+      description: 'language',
+    }
   },
 	resolve: (root, args) => {
-    let key = 'countries_' + args.continentId + '_' + args.code
-
+    let key = 'countries_'
+    let countries
     return cache.get(key).then((countries) => {
       if (countries) {
-        return countries
+        
+        return countries.filter(country => (args.code ? country.code === args.code : true) 
+              && (args.continentId ? country.continentId === args.continentId : true)).map(
+                country => { return {...country, language: args.language}}
+              )
       } else {
-        let filter = {  }
-        if(args.code) {
-          filter['code'] = args.code
-        } else {
-          if (args.continentId) {
-            filter['continentId'] = args.continentId
-          }
-        }
-        return countryModel.find(filter).then((countries) => {
+        
+        return countryModel.find().then((countries) => {
           return cache.set(key, countries).then((countries) => {
-            return countries
+            //console.log(countries)
+            return countries.filter(country => (args.code ? country.code === args.code : true) 
+              && (args.continentId ? country.continentId === args.continentId : true)).map(
+                country => { return {...country._doc, language: args.language}}
+              )
           })
           
         })

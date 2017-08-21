@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var countrySchema = new Schema({
     _id: Number,
     code: String,
-    name: String,
+    name: {},
     continentId: Number
 }, {collection:'country'});
 

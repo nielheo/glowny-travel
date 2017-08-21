@@ -2,10 +2,12 @@
 
 import {GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLScalarType, GraphQLList } from 'graphql'
 import propertyType from './propertyType'
-import { provinceModel, propertyModel }  from '../../mongodb/models'
+//import countryType from './countryType'
+import { provinceModel, propertyModel, countryModel }  from '../../mongodb/models'
 
 import Cacheman from 'cacheman'
 var cache = new Cacheman({ ttl: 60 * 60 })
+
 
 const countryType = new GraphQLObjectType({
 	name: 'country',
@@ -13,7 +15,13 @@ const countryType = new GraphQLObjectType({
 	fields: {
     _id: { type: GraphQLInt },
     code: { type: GraphQLString },
-    name: { type: GraphQLString },
+    name: { 
+      type: GraphQLString,
+      resolve: function(prop) {
+        console.log(prop)
+        return prop.name[prop.language] || prop.name['en-US'] || ''
+      } 
+    },
 	}
 })
 
@@ -55,15 +63,25 @@ const cityType = new GraphQLObjectType({
     country: {
       type: countryType,
       resolve: (args) => {
-        if (args.countryId) {
-          return {
-            _id: args.countryId,
-            //name: args.countryName,
-            code: args.countryCode,
+        let key = 'countries_' 
+        //console.log(args)
+        return cache.get(key).then((countries) => {
+          if (countries) {
+            let a =  { ...countries.filter(country => country._id === args.countryId)[0],
+              language: args.language }
+            console.log(a)
+            return a
+          } else {
+            
+            return countryModel.find().then((countries) => {
+              return cache.set(key, countries).then((countries) => {
+                return { ...countries.filter(country => country._id === args.countryId)[0]._doc,
+                  language: args.language }
+              })
+              
+            })
           }
-        } else {
-          return null;
-        }
+        })
       }
     },
     province: {

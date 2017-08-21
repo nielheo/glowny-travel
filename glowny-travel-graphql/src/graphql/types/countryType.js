@@ -12,8 +12,14 @@ const countryType = new GraphQLObjectType({
 	fields: {
     _id: { type: GraphQLInt },
     code: { type: GraphQLString },
-    name: { type: GraphQLString },
-    //continentId: { type: GraphQLInt },
+    name: { 
+      type: GraphQLString,
+      resolve: function(prop) {
+        console.log(prop)
+        return prop.name[prop.language] || prop.name['en-US'] || ''
+      } 
+    },
+    continentId: { type: GraphQLInt },
     cities: {
       type: new GraphQLList(cityType),
       resolve: (args, _id) => {
