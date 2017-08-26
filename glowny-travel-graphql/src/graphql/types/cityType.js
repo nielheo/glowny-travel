@@ -116,7 +116,6 @@ const cityType = new GraphQLObjectType({
       type: new GraphQLList(propertyType),
       resolve: (args, _id) => {
         let key = 'properties_' + args._id + '_'
-        console.log(args)
         return cache.get(key).then((properties) => {
           if (properties) {
             return properties.map(property => {return {...property, language: args.language}})

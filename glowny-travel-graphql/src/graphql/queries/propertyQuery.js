@@ -1,5 +1,5 @@
 'use strict'
-import propertyType from '../types/propertyType'
+import propertyDetailType from '../types/propertyDetailType'
 import { GraphQLList, GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql'
 import { propertyModel } from '../../mongodb/models'
 import { languageType } from '../enums'
@@ -8,7 +8,7 @@ import Cacheman from 'cacheman'
 var cache = new Cacheman({ ttl: 60 * 60 })
 
 var propertyQuery = {
-  type: propertyType,
+  type: propertyDetailType,
   args: {
     id: {
       description: 'id of property',
@@ -23,8 +23,6 @@ var propertyQuery = {
     let key = 'property_' + args.id
     return cache.get(key).then((property) => {
       if (property) {
-        console.log('from cache')
-        console.log(property)
         return {
           ...property,
           language: args.language,
@@ -35,10 +33,6 @@ var propertyQuery = {
       } else {
         return propertyModel.findOne({_id: args.id}).then((property) => {
           return cache.set(key, property).then((property) => {
-            console.log('from db')
-            console.log(property)
-            //console.log(args.language)
-            //console.log(languageType._values.filter(l => l.name === args.language))
             return {
               ...property._doc,
               language: args.language,

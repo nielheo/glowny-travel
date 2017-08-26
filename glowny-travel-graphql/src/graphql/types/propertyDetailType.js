@@ -7,7 +7,7 @@ import Cacheman from 'cacheman'
 var cache = new Cacheman({ ttl: 60 * 60 })
 
 const propertyType = new GraphQLObjectType({
-	name: 'property',
+	name: 'propertyDetail',
 	description: 'A property',
 	fields: {
     _id: { type: GraphQLInt },
@@ -44,6 +44,16 @@ const propertyType = new GraphQLObjectType({
     image: { type: GraphQLString },
     thumbnail: { type: GraphQLString },
     cityId: { type: GraphQLInt },
+    locationDescription: {
+      type: GraphQLString,
+      resolve: (args, _id) => {
+        console.log(args._id)
+        return propertyLocationModel.findOne({_id:args._id}).then(function(location) {
+          console.log(location)
+          return location && location.name[args.language] || ''
+        })
+      }
+    }
   }
 })
 

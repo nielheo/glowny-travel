@@ -14,7 +14,6 @@ const continentType = new GraphQLObjectType({
     name: { 
       type: GraphQLString,
       resolve: function(prop) {
-        console.log(prop)
         return prop.name[prop.language] || prop.name['en-US'] || ''
       } 
     },
