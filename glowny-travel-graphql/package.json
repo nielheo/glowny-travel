@@ -13,10 +13,13 @@
     "cacheman": "^2.2.1",
     "cors": "^2.8.3",
     "eslint-plugin-node": "^5.1.1",
+    "expect.js": "^0.3.1",
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
     "graphql": "^0.10.3",
+    "graphql-tester": "^0.0.5",
     "jsonwebtoken": "^7.4.1",
+    "mocha": "^3.5.0",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.4",
     "morgan": "^1.8.2",
@@ -31,5 +34,9 @@
     "eslint-plugin-import": "^2.6.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "./node_modules/.bin/mocha --compilers js:babel-core/register src/graphql/tests/*.test.js"
   }
 }

@@ -17,7 +17,6 @@ var continentQuery = {
   },
 	resolve: (root, args) => {
     let key = 'continents'
-    console.log(args)
     return cache.get(key).then((continents) => {
       if(continents) {
         return continents.map(continent => { return { ...continent, language: args.language }})

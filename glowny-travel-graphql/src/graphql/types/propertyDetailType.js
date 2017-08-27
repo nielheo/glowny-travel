@@ -47,9 +47,7 @@ const propertyType = new GraphQLObjectType({
     locationDescription: {
       type: GraphQLString,
       resolve: (args, _id) => {
-        console.log(args._id)
         return propertyLocationModel.findOne({_id:args._id}).then(function(location) {
-          console.log(location)
           return location && location.name[args.language] || ''
         })
       }
