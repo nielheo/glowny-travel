@@ -58,18 +58,18 @@ describe('viewer/cities', () => {
       })
     })
 
-    it('select cities with id:522, name:den,countryCode:ID, count is 1', function () {
+    it('select cities with id:522, name:den,countryCode:ID, count bigger than 0', function () {
       return test('{ "query": "{viewer{cities(language:en_US, name:\\"bandung\\", countryCode:\\"ID\\"){_id}}}" }')
       .then(result => {
         expect(result.status).to.equal(200)
         expect(result.success).to.equal(true)
         expect(result.data.viewer.cities).to.be.an('array')
-        expect(result.data.viewer.cities.length).to.be.greaterThan(1)
+        expect(result.data.viewer.cities.length).to.be.greaterThan(0)
       })
     })
 
     it('select cities - return all expected fields', function () {
-      return test('{ "query": "{viewer{cities(language:id_ID,id:6142791){_id name nameLong properties {_id} }}}" }')
+      return test('{ "query": "{viewer{cities(language:id_ID,id:522){_id name nameLong properties {_id} }}}" }')
       .then(result => {
         expect(result.status).to.equal(200)
         expect(result.success).to.equal(true)

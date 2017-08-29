@@ -8,13 +8,13 @@ describe('viewer/continens', () => {
   })
 
   describe('select', function () {
-    it('select continents count is 10', function () {
+    it('select continents count is 1', function () {
       return test('{ "query": "{viewer{continents(language:id_ID){_id name}}}" }')
       .then(result => {
         expect(result.status).to.equal(200)
         expect(result.success).to.equal(true)
         expect(result.data.viewer.continents).to.be.an('array')
-        expect(result.data.viewer.continents.length).to.equal(10)
+        expect(result.data.viewer.continents.length).to.equal(1)
       })
     })
 

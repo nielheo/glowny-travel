@@ -8,8 +8,8 @@ describe('viewer/property', () => {
   })
 
   describe('select', function () {
-    it('select property with id:129912, count is 1', function () {
-      return test('{ "query": "{viewer{property(language:en_US, id:129912){_id}}}" }')
+    it('select property with id:544483, count is 1', function () {
+      return test('{ "query": "{viewer{property(language:en_US, id:544483){_id}}}" }')
       .then(result => {
         expect(result.status).to.equal(200)
         expect(result.success).to.equal(true)
@@ -18,7 +18,7 @@ describe('viewer/property', () => {
     })
 
     it('select property - return all expected fields', function () {
-      return test(`{ "query": "{viewer{property(language:id_ID,id:129912){ _id seqNumber name address1 address2 city stateProvince postalCode country latitude longitude starRating categoryId categoryName location image thumbnail cityId locationDescription }}}" }`)
+      return test(`{ "query": "{viewer{property(language:id_ID,id:544483){ _id seqNumber name address1 address2 city stateProvince postalCode country latitude longitude starRating categoryId categoryName location image thumbnail cityId locationDescription }}}" }`)
       .then(result => {
         expect(result.status).to.equal(200)
         expect(result.success).to.equal(true)
